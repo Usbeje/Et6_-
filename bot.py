@@ -2,7 +2,7 @@ import openai
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Set your OpenAI and Telegram bot tokens
-openai.api_key = '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'
+openai.api_key = 'sk-svcacct-B1IDrqKXQ4itRMXQQrRy4oe9S29S6dCftS1xvKasWToVa0Ec8nv2tXK3jLVT3BlbkFJ7jqwbYmjvuBphFuWT08yesnWxO0kr8eY-FKxVwr-aJ7wLRHfmKYaeQ8wkjQA'
 TELEGRAM_TOKEN = '7509744768:AAF9py0gQGdO61IecG_oPPkVtjs0gli8l3I'
 
 # Function to handle user messages
