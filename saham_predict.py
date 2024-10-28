@@ -32,7 +32,7 @@ import os
 
 # Memuat API key dari .env
 load_dotenv()
-api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+api_key = os.getenv("236WN38W5910CHY0")
 
 # Fungsi untuk mendapatkan data historis saham dari Alpha Vantage
 def dapatkan_data(ticker, tahun_awal, tahun_akhir):
