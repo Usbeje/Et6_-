@@ -11,7 +11,7 @@ def install_and_import(package):
 
 # Daftar modul yang diperlukan
 required_packages = [
-    "numpy", "tensorflow", "sklearn", "pandas", 
+    "numpy", "tensorflow", "scikit-learn", "pandas", 
     "alpha_vantage", "python-dotenv"
 ]
 
