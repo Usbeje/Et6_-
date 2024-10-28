@@ -1,15 +1,46 @@
-import yfinance as yf
+import subprocess
+import sys
+
+# Fungsi untuk menginstal modul jika belum terpasang
+def install_and_import(package):
+    try:
+        __import__(package)
+    except ImportError:
+        print(f"Memasang {package}...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Daftar modul yang diperlukan
+required_packages = [
+    "numpy", "tensorflow", "sklearn", "pandas", 
+    "alpha_vantage", "python-dotenv"
+]
+
+# Memasang semua modul yang diperlukan
+for package in required_packages:
+    install_and_import(package)
+
+# Setelah modul dipasang, impor modulnya
 import numpy as np
 from datetime import datetime
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM, Dropout, Input
 from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
+from alpha_vantage.timeseries import TimeSeries
+from dotenv import load_dotenv
+import os
 
-# Fungsi untuk mendapatkan data historis saham
+# Memuat API key dari .env
+load_dotenv()
+api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
+
+# Fungsi untuk mendapatkan data historis saham dari Alpha Vantage
 def dapatkan_data(ticker, tahun_awal, tahun_akhir):
-    data = yf.download(ticker, start=tahun_awal, end=tahun_akhir)
-    return data['Close']
+    ts = TimeSeries(key=api_key, output_format='pandas')
+    data, _ = ts.get_daily(symbol=ticker, outputsize='full')
+    data = data['4. close']  # Menggunakan harga penutupan
+    data = data[(data.index >= tahun_awal) & (data.index <= tahun_akhir)]
+    return data
 
 # Fungsi untuk membangun model LSTM
 def buat_model_lstm(input_shape):
@@ -49,7 +80,7 @@ def prediksi_harga(data, model, scaler, days_to_predict):
 
 # Main program
 ticker = input("Ticker yang ingin diprediksi (contoh: BTC-USD): ")
-tahun_input = input("Tahun? (contoh: 2024-2025 atau 2024-12-30 - 2025-12-30): ")
+tahun_input = input("Tahun? (contoh: 2024-12-30 - 2025-12-30): ")
 
 # Pemrosesan input tahun
 tahun_awal, tahun_akhir = tahun_input.split(" - ") if " - " in tahun_input else tahun_input.split("-")
